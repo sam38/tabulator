@@ -1,0 +1,80 @@
+section[data-type="judges"] {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+
+    & .item {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    & .item:hover {
+        background: #eee;
+    }
+}
+
+section[data-type="contestants"] {
+
+    & .item {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    & .image {
+        display: none;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto 8px;
+        aspect-ratio: 1;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-color: #aaa;
+        border: 1px solid #ccc;
+        border-radius: 50%;
+
+        & img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            object-position: center;
+        }
+    }
+
+    & .image.active {
+        display: block;
+    }
+
+    & .criteria {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+
+        & .h4 {
+            z-index: 1;
+            padding-right: 10px;
+            margin: 0;
+            background: #fff;
+        }
+
+        & button {
+            z-index: 1;
+        }
+    }
+
+    & .criteria:before {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px dotted #ddd;
+        content: '';
+    }
+}

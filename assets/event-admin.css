@@ -1,0 +1,51 @@
+body.post-type-event #wp-content-editor-container iframe {
+    height: 120px !important;
+}
+.select-multi + .select2-container {
+    width: 100% !important;
+
+    & .select2-selection {
+        padding-bottom: 0;
+    }
+
+    & .select2-selection__choice {
+        font-size: 15px;
+    }
+}
+
+.form-group {
+    display: flex;
+    margin-top: 15px;
+
+    & label {
+        display: block;
+        flex: 0 0 120px;
+        font-weight: bold;
+    }
+
+    & .form-content {
+        flex: 1;
+    }
+
+    & #criteria > div {
+        margin-bottom: 5px;
+    }
+
+    & .delete-criteria {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        color: #b32d2e;
+        translate: 2px 1px;
+    }
+
+    & .dashicons {
+        color: #aaa;
+        cursor: move;
+        translate: -3px 5px;
+    }
+
+    & .add-criteria {
+        translate: 22px 0;
+    }
+}
