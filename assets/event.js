@@ -17,7 +17,7 @@ $(function(){
         e.stopPropagation();
         const $elm = $(this).parent();
         $modal.data('index', $elm.data('index'));
-        $modal.find('.modal-title').text(`Score: ${$elm.find('.h4').text()}`);
+        $modal.find('.modal-title').text(`Score: ${$elm.find('.title').text()}`);
         $score.val($elm.find('button').text());
         modal.show();
     });

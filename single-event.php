@@ -6,18 +6,38 @@
 require_once(__DIR__ . "/../../../wp-load.php");
 
 global $wp;
-
-$data = get_post_meta($post->ID, 'event_data', true);
-$contestants = get_posts([
-    'post_type' => 'contestant',
-    'post_status' => 'publish',
-    'posts_per_page' => -1,
-]);
 $judges = get_posts([
     'post_type' => 'judge',
     'post_status' => 'publish',
     'posts_per_page' => -1,
 ]);
+$data = get_post_meta($post->ID, 'event_data', true);
+$action = @$_GET['action'];
+$judgeId = 0;
+$judgeName = '';
+$column = 'col-md-8 offset-md-2 col-lg-6 offset-lg-3';
+if ($action == 'tally') {
+    $judgeId = @intval(base64_decode($_GET['judge']));
+    if (! $judgeId) { die('Invalid Access!'); }
+
+    foreach ($judges as $item) {
+        if ($item->ID == $judgeId) {
+            $judgeName = $item->post_title;
+        }
+    }
+} elseif ($action == 'table') {
+    $column = 'col-12';
+}
+$contestants = get_posts([
+    'post_type' => 'contestant',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+]);
+
+function eventLink($uri='')
+{
+    return get_permalink() . $uri;
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,61 +61,37 @@ $judges = get_posts([
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="<?=home_url($wp->request)?>">Score</a>
+                    <a class="nav-link" aria-current="page" href="<?=eventLink()?>">Judges</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?=home_url($wp->request)?>?table">Table</a>
+                    <a class="nav-link" href="<?=eventLink('?action=table')?>">Table</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<div class="container" style="background: #fff">
+<div class="container my-4" style="background: #fff">
     <div class="row">
-        <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <div class="<?=$column?>">
             <div id="app" class="py-4">
-                <section data-type="judges">
-                    <?php
-                    foreach ($judges as $item) {
-                        if (in_array($item->ID, @$data['judges'])) {
-                            ?>
-                            <div class="item display-6"><?=$item->post_title?></div>
-                        <?php }} ?>
-                </section>
-                <section data-type="contestants">
-                    <?php
-                    $options = '';
-                    foreach ($contestants as $index => $item) {
-                        if (in_array($item->ID, @$data['contestants'])) {
-                            $options.= "<option value='{$item->ID}'>{$item->post_title}</option>";
-                            $image = wp_get_attachment_image_src(
-                                    get_post_thumbnail_id($item->ID),
-                                    'single-post-thumbnail'
-                            );
-                            ?>
-                        <div class="image <?=$index == 0 ? 'active' : ''?>" id="c_<?=$item->ID?>"
-                            style="background-image: url(<?=@$image[0]?>)"></div>
-                        <?php }} ?>
-                    <select class="form-select form-select-lg mb-4" name="contestant" id="contestant"><?=$options?></select>
-
-                    <?php foreach (@$data['criteria'] as $index => $item) { ?>
-                    <div class="criteria" data-index="<?=$index?>" data-weight="<?=$item['weight']?>">
-                        <div class="h4"><?=$item['title']?></div>
-                        <button type="button" class="btn btn-light">0</button>
-                    </div>
-                    <?php } ?>
-                </section>
+                <?php
+                switch ($action) {
+                    case 'tally':
+                        include 'single-event__tally.php';
+                        break;
+                    case 'table':
+                        include 'single-event__table.php';
+                        break;
+                    default:
+                        include 'single-event__judge.php';
+                }
+                ?>
             </div>
         </div>
     </div>
 </div>
-<footer class="d-flex flex-wrap justify-content-between align-items-center py-3 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-        <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-            <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-        </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">© <?=date('Y')?> Miss Kanorau NZ</span>
-    </div>
+<footer class="py-3 border-top text-center">
+    <small class="mb-3 mb-md-0 text-body-secondary">© <?=date('Y')?> Miss Kanorau NZ</small>
 </footer>
 <div class="modal fade" id="scoreModal" data-bs-backdrop="static"  tabindex="-1" data-index="">
     <div class="modal-dialog">

@@ -8,6 +8,8 @@ section[data-type="judges"] {
         align-items: center;
         justify-content: center;
         aspect-ratio: 1;
+        color: #000;
+        text-decoration: none;
         border: 1px solid #ccc;
         border-radius: 4px;
         transition: all 0.3s ease;
@@ -57,7 +59,7 @@ section[data-type="contestants"] {
         justify-content: space-between;
         margin: 10px 0;
 
-        & .h4 {
+        & .title {
             z-index: 1;
             padding-right: 10px;
             margin: 0;
@@ -77,4 +79,8 @@ section[data-type="contestants"] {
         border-bottom: 1px dotted #ddd;
         content: '';
     }
+}
+
+section[data-type="table"] {
+    overflow: auto;
 }
