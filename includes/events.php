@@ -75,9 +75,11 @@ add_action('save_post', function($postId) {
     $criteria = [];
     $totalCriteria = count($_POST['criteria']);
     for ($i=0; $i<$totalCriteria; $i++) {
+        $weight = intval(@$_POST['weight'][$i]);
         $criteria[] = [
+            'id' => @$_POST['id'][$i],
             'title' => @$_POST['criteria'][$i],
-            'weight' => @$_POST['weight'][$i],
+            'weight' => $weight > 100 ? 100 : max($weight, 1),
         ];
     }
 
@@ -128,12 +130,15 @@ function eventDetailCallback($post)
 
     $criteriaFields = '';
     foreach (@$data['criteria'] as $item) {
+        $id = esc_attr(@$item['id']);
+        if (! $id) { $id = 'id' . rand(10000, 9999999); }
         $title = esc_attr(@$item['title']);
         $weight = esc_attr(@$item['weight']);
         $criteriaFields.= '<div>' .
             '<span class="dashicons dashicons-sort"></span>' .
             '<input type="text" name="criteria[]" size="40" placeholder="Title" value="' . $title . '" required>' .
-            '<input type="text" name="weight[]" size="8" placeholder="Weight %" value="' . $weight . '" required>' .
+            '<input type="hidden" name="weight[]" size="8" placeholder="Weight %" value="' . $weight . '" required>' .
+            '<input type="hidden" name="id[]" value="' . $id . '">' .
             '<button type="button" class="delete-criteria">Delete</button></div>';
     }
 

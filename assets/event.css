@@ -79,8 +79,124 @@ section[data-type="contestants"] {
         border-bottom: 1px dotted #ddd;
         content: '';
     }
+
+    & .scores {
+        display: none;
+    }
+}
+
+section[data-type="contestants"].active {
+    & .scores {
+        display: block;
+    }
+
+    & .alert {
+        display: none;
+    }
+}
+
+@media all and (min-width: 992px) {
+    section[data-type="contestants"] {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 section[data-type="table"] {
     overflow: auto;
+}
+
+.score-table {
+    display: flex;
+    flex-flow: row wrap;
+    font-size: 16px;
+
+    & small {
+        font-size: 11px;
+    }
+
+    & .tr {
+        display: flex;
+        flex: 1 1 100%;
+        padding: 10px 0;
+        border-bottom: 1px solid #ccc;
+
+        & > div {
+            flex: 1;
+            min-width: 80px;
+            padding: 0 3px;
+            text-align: center;
+        }
+
+        & > .column-rank {
+            flex: 0 0 30px;
+        }
+
+        & > .column-name {
+            flex: 0 0 180px;
+        }
+
+        & em {
+            color: #bbb;
+            font-size: 10px;
+        }
+    }
+
+    & .thead {
+        order: 1;
+        font-weight: bold;
+
+        & > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            button {
+                flex: 1;
+                height: 100%;
+                padding: 5px;
+                font-weight: 700;
+                background: #eee;
+                border: none;
+                transition: all 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #ddd;
+            }
+
+            button.active {
+                background-color: #6bd2d3;
+            }
+        }
+    }
+
+    & .tbody {
+        display: flex;
+        flex-flow: row wrap;
+        flex: 1 1 100%;
+        order: 2;
+    }
+
+    & .tfoot {
+        flex: 1 1 100%;
+        order: 3;
+    }
+
+
+
+    /* Header row */
+
+}
+
+.indexes {
+    font-size: 11px;
+}
+
+div[data-tab-content] {
+    display: none;
+}
+
+div[data-tab-content].active {
+    display: block;
 }

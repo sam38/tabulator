@@ -34,3 +34,4 @@ function postTypeHandleMatches($handle, $hook='post.php', $options=[])
 include 'judges.php';
 include 'contestants.php';
 include 'events.php';
+include 'scores.php';
